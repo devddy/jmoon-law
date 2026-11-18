@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "16"
+    "node": "22.x"
   },
   "scripts": {
     "zip": "npm run build && zip -r jmoon-lawfirm.zip .ebextentions/ .next/ pages/ styles/ public/ components/ next.config.js package.json",
