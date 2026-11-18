@@ -1,113 +1,70 @@
-import Link from "next/link";
 import React from "react";
+import MainNewsLegacy from "./MainNewsLegacy";
+import { NAVER_BLOG_ID } from "../../lib/naverBlog";
 
-export default function MainInsight() {
+// 기존 하드코딩 뉴스 3건을 다시 보이게 하려면 true로 변경
+const SHOW_LEGACY_NEWS = false;
+
+const FALLBACK_THUMBNAIL = "/images/news_01.jpeg";
+
+export default function MainNews({ posts }) {
+  const hasPosts = Array.isArray(posts) && posts.length > 0;
+
+  if (!hasPosts) {
+    return SHOW_LEGACY_NEWS ? <MainNewsLegacy /> : null;
+  }
+
   return (
-    <section className="py-20">
-      <div className="container">
-        <h1 className="text-2xl lg:text-5xl font-bold mb-5 wow animate__animated animate__fadeIn animated">
-          NEWS
-        </h1>
-        <div className="flex flex-wrap -mx-3">
-          <div
-            className="w-full lg:w-1/3 px-3 mb-12 wow animate__animated animate__fadeIn animated hover-up-5"
-            data-wow-delay=".1s"
-          >
-            <a>
-              <img
-                className="h-80 w-full object-cover rounded"
-                src="/images/news_02.jpeg"
-                alt="Monst"
-              />
-            </a>
-            <p className="mt-6 text-sm text-blue-400">
-              <a>
-                <span className="inline-block py-1 px-3 text-xs font-semibold rounded-mainColor rounded-xl mr-3">
-                  News
-                </span>
-              </a>
-              <span className="text-blueGray-400 text-xs">29 Oct, 2022</span>
-            </p>
-            <h3 className="my-2 text-2xl font-bold font-heading">
-              <a>변호사 대리 실무 교육</a>
-            </h3>
-            <p className="text-blueGray-400 leading-loose news-text">
-              세무조사/불복 등 조세전문
-            </p>
-            <p className="text-blueGray-400 leading-loose news-text news-item">
-              (관련경력)
-              <br />
-              인천지방국세청 징세송무국 체납추적과
-              <br />
-              인천지방국세청 징세송무국 송무과
-              <br />
-              인천지방국세청 과세판단자문위원회 위원
-              <br />
-              인천지방검찰청 조세소송 전담
-              <br />
-            </p>
+    <>
+      <section className="py-20">
+        <div className="container">
+          <h1 className="text-2xl lg:text-5xl font-bold mb-5 wow animate__animated animate__fadeIn animated">
+            NEWS
+          </h1>
+          <div className="flex flex-wrap -mx-3">
+            {posts.map((post, i) => (
+              <div
+                key={post.link}
+                className="w-full lg:w-1/3 px-3 mb-12 wow animate__animated animate__fadeIn animated hover-up-5"
+                data-wow-delay={i % 2 === 0 ? ".1s" : ".3s"}
+              >
+                <a href={post.link} target="_blank" rel="noopener noreferrer">
+                  <img
+                    className="h-80 w-full object-cover rounded"
+                    src={post.thumbnail || FALLBACK_THUMBNAIL}
+                    alt={post.title}
+                    referrerPolicy="no-referrer"
+                    loading="lazy"
+                  />
+                </a>
+                <p className="mt-6 text-sm text-blue-400">
+                  <span className="inline-block py-1 px-3 text-xs font-semibold rounded-mainColor rounded-xl mr-3">
+                    {post.category || "News"}
+                  </span>
+                  <span className="text-blueGray-400 text-xs">{post.date}</span>
+                </p>
+                <h3 className="my-2 text-2xl font-bold font-heading">
+                  <a href={post.link} target="_blank" rel="noopener noreferrer">
+                    {post.title}
+                  </a>
+                </h3>
+                <p className="text-blueGray-400 leading-loose news-text">{post.summary}</p>
+              </div>
+            ))}
           </div>
-          <div
-            className="w-full lg:w-1/3 px-3 mb-12 wow animate__animated animate__fadeIn animated hover-up-5"
-            data-wow-delay=".3s"
-          >
-            <a>
-              <img
-                className="h-80 w-full object-cover rounded"
-                src="/images/news_01.jpeg"
-                alt="Monst"
-              />
+          <div className="text-center">
+            <a
+              href={`https://blog.naver.com/${NAVER_BLOG_ID}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block py-4 px-8 text-xs text-white font-semibold leading-none default-btn rounded"
+            >
+              블로그에서 더 보기
             </a>
-            <p className="mt-6 text-sm text-blue-400">
-              <a>
-                <span className="inline-block py-1 px-3 text-xs font-semibold rounded-mainColor rounded-xl mr-3">
-                  News
-                </span>
-              </a>
-              <span className="text-blueGray-400 text-xs">29 Oct, 2022</span>
-            </p>
-            <h3 className="my-2 text-2xl font-bold font-heading">
-              <a>학교폭력소위원회 위원장 위촉</a>
-            </h3>
-            <p className="text-blueGray-400 leading-loose news-text">
-              학생의 인권을 보호하고 학생을 건전한 사회구성원으로 육성하도록
-              최선을 다하겠습니다.
-            </p>
-            <p className="text-blueGray-400 leading-loose news-item news-text">
-              (관련경력)
-              <br /> 연세대학교 교육학 전공
-            </p>
-          </div>
-          <div
-            className="w-full lg:w-1/3 px-3 mb-12 wow animate__animated animate__fadeIn animated hover-up-5"
-            data-wow-delay=".1s"
-          >
-            <a>
-              <img
-                className="h-80 w-full object-cover rounded"
-                src="/images/news_03.jpeg"
-                alt="Monst"
-              />
-            </a>
-            <p className="mt-6 text-sm text-blue-400">
-              <a>
-                <span className="inline-block py-1 px-3 text-xs font-semibold rounded-mainColor rounded-xl mr-3">
-                  News
-                </span>
-              </a>
-              <span className="text-blueGray-400 text-xs">01 Oct, 2022</span>
-            </p>
-            <h3 className="my-2 text-2xl font-bold font-heading">
-              <a>군사법원 국선변호인 위촉</a>
-            </h3>
-            <p className="text-blueGray-400 leading-loose news-text">
-              제2지역 군사법원 국선변호인 위촉
-              <br />
-              위촉기간 : 2022년 10월 ~ 2023년 12월
-            </p>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+      {SHOW_LEGACY_NEWS && <MainNewsLegacy />}
+    </>
   );
 }
